@@ -130,7 +130,7 @@ function Focus({ name, delta, total, counter, color, days }: TimerType) {
             opacity: 1,
           }}
           animate={{ width: 300, height: 300, x: 0, y: 0 }}
-          transition={{ duration: 5 }}
+          transition={{ duration: 0.3 }}
         >
           <CircularProgressbarWithChildren
             strokeWidth={6}
