@@ -113,15 +113,12 @@ function Focus({ name, delta, total, counter, color, days }: TimerType) {
 
   const { width, height, x, y } = state.state.focusRect ?? emptyRect;
   return (
-    <div className="container">
-      <button onClick={() => handleBack()} className="back-button">
-        <FaChevronLeft size={32} />
-      </button>
-      <h3 className="title">{name}</h3>
+    <>
       <div className="timer-container">
         <GradientSVG />
         <motion.div
           key="focus-timer"
+          style={{ zIndex: 999 }}
           initial={{
             width,
             height,
@@ -174,52 +171,72 @@ function Focus({ name, delta, total, counter, color, days }: TimerType) {
             <ConfettiExplosion {...confettiProps} />
           </div>
         )}
-        <br />
-        <br />
-        <div className="button-container">
-          <button
-            className="play-button"
-            onClick={() =>
-              counter ? countNext() : isRunning ? signalPause() : signalStart()
-            }
-            disabled={delta >= total}
-          >
-            {counter ? (
-              <FaForward />
-            ) : isRunning ? (
-              <FaPause />
-            ) : (
-              <FaPlay style={{ position: "relative", left: "2px" }} />
-            )}
-          </button>
+      </div>
+      <motion.div
+        className="container"
+        initial={{
+          opacity: 0,
+        }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 0.5, ease: "easeInOut" }}
+      >
+        <button onClick={() => handleBack()} className="back-button">
+          <FaChevronLeft size={32} />
+        </button>
+        <h3 className="title">{name}</h3>
+
+        <div className="footer-buttons">
+          <div>
+            <div className="button-container footer-top">
+              <button
+                className="play-button"
+                onClick={() =>
+                  counter
+                    ? countNext()
+                    : isRunning
+                    ? signalPause()
+                    : signalStart()
+                }
+                disabled={delta >= total}
+              >
+                {counter ? (
+                  <FaForward />
+                ) : isRunning ? (
+                  <FaPause />
+                ) : (
+                  <FaPlay style={{ position: "relative", left: "2px" }} />
+                )}
+              </button>
+            </div>
+          </div>
+          <div className="footer-bottom">
+            <Confirmation
+              title="Reset Timer"
+              body="Task data will be reset to zero. This action cannot be undone"
+              callback={() => {
+                signalReset();
+                setTaskOver(false);
+              }}
+              disabled={delta == 0}
+            >
+              <FaUndoAlt />
+            </Confirmation>
+            <Confirmation
+              title="Delete Timer"
+              body="Task will be deleted. All previous task data will be preserved."
+              callback={() => deleteTimer(name)}
+            >
+              <FaTrash />
+            </Confirmation>
+            <Add setHook={editTimer} initialValues={init}>
+              <button className="action-button">
+                <FaCog />
+              </button>
+            </Add>
+          </div>
         </div>
-      </div>
-      <div className="footer-buttons">
-        <Confirmation
-          title="Reset Timer"
-          body="Task data will be reset to zero. This action cannot be undone"
-          callback={() => {
-            signalReset();
-            setTaskOver(false);
-          }}
-          disabled={delta == 0}
-        >
-          <FaUndoAlt />
-        </Confirmation>
-        <Confirmation
-          title="Delete Timer"
-          body="Task will be deleted. All previous task data will be preserved."
-          callback={() => deleteTimer(name)}
-        >
-          <FaTrash />
-        </Confirmation>
-        <Add setHook={editTimer} initialValues={init}>
-          <button className="action-button">
-            <FaCog />
-          </button>
-        </Add>
-      </div>
-    </div>
+      </motion.div>
+    </>
   );
 }
 
