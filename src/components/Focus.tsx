@@ -1,6 +1,6 @@
 import { App } from "@capacitor/app";
 import { Capacitor } from "@capacitor/core";
-import { motion } from "framer-motion";
+import { AnimatePresence, motion, useAnimationControls } from "framer-motion";
 import { useContext, useEffect, useState } from "react";
 import {
   buildStyles,
@@ -12,7 +12,7 @@ import ConfettiExplosion, { ConfettiProps } from "react-confetti-explosion";
 import {
   FaChevronLeft,
   FaCog,
-  FaForward,
+  FaForward,  
   FaPause,
   FaPlay,
   FaTrash,
@@ -42,7 +42,7 @@ const confettiProps: ConfettiProps = {
 };
 
 const effect = new Audio("/sounds/complete.mp3");
-
+const ANIM_DURATION = 0.25;
 function Focus({ name, delta, total, counter, color, days }: TimerType) {
   const [prevDelta, setPrevDelta] = useState(delta);
   const [taskOver, setTaskOver] = useState(false);
@@ -89,7 +89,15 @@ function Focus({ name, delta, total, counter, color, days }: TimerType) {
     days,
   };
 
-  const handleBack = () => {
+  const handleBack = async () => {
+    fadeControl.start({ opacity: 0 });
+    await motionControl.start({
+      width,
+      height,
+      x: x - window.innerWidth / 2,
+      y: y - window.innerHeight / 2,
+      opacity: 1,
+    });
     // Handle the back swipe gesture here
     signalStop();
   };
@@ -111,6 +119,14 @@ function Focus({ name, delta, total, counter, color, days }: TimerType) {
     y: 0,
   };
 
+  const fadeControl = useAnimationControls();
+  const motionControl = useAnimationControls();
+
+  useEffect(() => {
+    fadeControl.start({ opacity: 1 });
+    motionControl.start({ width: 300, height: 300, x: 0, y: 0 });
+  }, []);
+
   const { width, height, x, y } = state.state.focusRect ?? emptyRect;
   return (
     <>
@@ -126,8 +142,9 @@ function Focus({ name, delta, total, counter, color, days }: TimerType) {
             y: y - window.innerHeight / 2,
             opacity: 1,
           }}
-          animate={{ width: 300, height: 300, x: 0, y: 0 }}
-          transition={{ duration: 0.3 }}
+          animate={motionControl}
+          transition={{ duration: ANIM_DURATION }}
+          exit={{ opacity: 0 }}
         >
           <CircularProgressbarWithChildren
             strokeWidth={6}
@@ -177,8 +194,8 @@ function Focus({ name, delta, total, counter, color, days }: TimerType) {
         initial={{
           opacity: 0,
         }}
-        animate={{ opacity: 1 }}
-        transition={{ duration: 0.5, ease: "easeInOut" }}
+        animate={fadeControl}
+        transition={{ duration: ANIM_DURATION, ease: "easeInOut" }}
       >
         <button onClick={() => handleBack()} className="back-button">
           <FaChevronLeft size={32} />

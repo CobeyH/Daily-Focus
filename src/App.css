@@ -16,6 +16,7 @@ a {
   padding-bottom: 64px;
   background-color: var(--background-color);
 }
+
 .page:after {
   content: "";
   flex: auto;
@@ -30,6 +31,7 @@ a {
   .timer {
     flex: 0 0 calc(100% - 10px);
   }
+
   .week-title {
     font-size: 12px;
   }
@@ -39,6 +41,7 @@ a {
   .timer {
     flex: 0 0 calc(48% - 10px);
   }
+
   .week-title {
     font-size: 95%;
   }
@@ -48,6 +51,7 @@ a {
   .timer {
     flex: 0 0 calc(30% - 10px);
   }
+
   .week-title {
     font-size: 160%;
   }
@@ -191,4 +195,12 @@ a {
   padding-right: 18px;
   overflow-y: scroll;
   display: contents;
+}
+
+.overlay {
+  position: absolute;
+  z-index: 99;
+  left: 0;
+  width: 100%;
+  background: var(--background-color);
 }
