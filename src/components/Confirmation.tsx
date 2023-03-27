@@ -12,7 +12,7 @@ function Confirmation({
   disabled = false,
 }: {
   title: string;
-  body: string;
+  body: any;
   type?: string;
   callback: any;
   children?: any;
@@ -38,7 +38,7 @@ function Confirmation({
       </button>
       <dialog open={modal}>
         <article className="modal">
-          <h1>{title}</h1>
+          <h1 style={{marginBottom: 30}}>{title}</h1>
           <div>{body}</div>
           <footer style={{ display: "flex" }}>
             <button

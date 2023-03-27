@@ -51,7 +51,7 @@ function Settings({
           // disabled={!proSku?.proSku || state.state.promode}
           disabled={true}
         >
-          Pro Mode Coming Soon
+          Pro Mode (Coming Soon)
         </Confirmation>
         <button
           className="settings-button"
