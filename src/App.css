@@ -57,9 +57,12 @@ a {
   }
 }
 
-@media (min-width: 1200px) {
+@media (min-width: 1000px) {
   .timer {
     flex: 0 0 calc(16.666% + 40px);
+  }
+  .week-title {
+    font-size: 115%;
   }
 }
 
@@ -96,7 +99,7 @@ a {
   border-radius: 100%;
   font-size: 17px;
   line-height: 0;
-  z-index: auto;
+  z-index: 998;
   padding: 0;
 }
 
@@ -156,7 +159,6 @@ a {
   background-color: var(--nav-bar);
   box-shadow: 0 0 20px 20px rgba(0, 0, 0, 0.2);
   gap: 8px;
-  height: 52px;
   z-index: 1;
 }
 
