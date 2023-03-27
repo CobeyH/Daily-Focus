@@ -27,14 +27,15 @@ function App() {
     proSku: undefined,
   });
 
-  useEffect(() => {
-    async function init() {
-      const skuInfo = await initGlassfy();
-      setProSku(skuInfo);
-      setProMode(skuInfo);
-    }
-    init();
-  }, []);
+  // PRO_MODE
+  // useEffect(() => {
+  //   async function init() {
+  //     const skuInfo = await initGlassfy();
+  //     setProSku(skuInfo);
+  //     setProMode(skuInfo);
+  //   }
+  //   init();
+  // }, []);
 
   // Set up gesture controls for page navigation.
   const handlers = useSwipeable({

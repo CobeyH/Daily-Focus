@@ -48,9 +48,10 @@ function Settings({
           type={"settings-button"}
           invert
           confirmText="Purchase"
-          disabled={!proSku?.proSku || state.state.promode}
+          // disabled={!proSku?.proSku || state.state.promode}
+          disabled={true}
         >
-          Upgrade Pro Mode
+          Pro Mode Coming Soon
         </Confirmation>
         <button
           className="settings-button"
