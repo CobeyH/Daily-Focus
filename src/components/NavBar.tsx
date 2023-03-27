@@ -2,13 +2,7 @@ import { FaClock, FaChartLine, FaCog } from "react-icons/fa";
 import { TabType } from "../types";
 import "../App.css";
 
-function NavBar({
-  tab,
-  setTab,
-}: {
-  tab: TabType;
-  setTab: (tab: TabType) => void;
-}) {
+function NavBar({ tab, setTab }: { tab: TabType; setTab: (tab: any) => void }) {
   const icons = [
     <FaClock className="nav-icon" size={"24px"} />,
     <FaChartLine className="nav-icon" size={"24px"} />,
@@ -27,7 +21,7 @@ function NavBar({
           <a
             href="#"
             className={`${tab === i && "selected"}`}
-            onClick={() => setTab(i)}
+            onClick={() => setTab([i, i < tab ? -1 : 1])}
           >
             {icons[i]}
           </a>

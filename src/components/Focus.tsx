@@ -1,5 +1,6 @@
 import { App } from "@capacitor/app";
 import { Capacitor } from "@capacitor/core";
+import { motion } from "framer-motion";
 import { useContext, useEffect, useState } from "react";
 import {
   buildStyles,
@@ -88,14 +89,14 @@ function Focus({ name, delta, total, counter, color, days }: TimerType) {
     days,
   };
 
-  useEffect(() => {
-    const handleBackButton = () => {
-      // Handle the back swipe gesture here
-      signalStop();
-    };
+  const handleBack = () => {
+    // Handle the back swipe gesture here
+    signalStop();
+  };
 
+  useEffect(() => {
     // Listen for the backButton event
-    const backButtonListener = App.addListener("backButton", handleBackButton);
+    const backButtonListener = App.addListener("backButton", handleBack);
 
     // Cleanup function to remove the listener when the component unmounts
     return () => {
@@ -103,50 +104,71 @@ function Focus({ name, delta, total, counter, color, days }: TimerType) {
     };
   }, []);
 
+  const emptyRect = {
+    width: 0,
+    height: 0,
+    x: 0,
+    y: 0,
+  };
+
+  const { width, height, x, y } = state.state.focusRect ?? emptyRect;
   return (
     <div className="container">
-      <button onClick={() => signalStop()} className="back-button">
+      <button onClick={() => handleBack()} className="back-button">
         <FaChevronLeft size={32} />
       </button>
       <h3 className="title">{name}</h3>
       <div className="timer-container">
         <GradientSVG />
-        <CircularProgressbarWithChildren
-          strokeWidth={6}
-          background
-          value={(delta! / total!) * 100}
-          styles={buildStyles({
-            pathColor: color,
-            strokeLinecap: "butt",
-            trailColor: color + "20",
-            backgroundColor:
-              delta < total
-                ? "var(--progress-fill)"
-                : color || "#1bb3e6" + "A0",
-          })}
+        <motion.div
+          key="focus-timer"
+          initial={{
+            width,
+            height,
+            x: x - window.innerWidth / 2,
+            y: y - window.innerHeight / 2,
+            opacity: 1,
+          }}
+          animate={{ width: 300, height: 300, x: 0, y: 0 }}
+          transition={{ duration: 0.3 }}
         >
-          {delta < total ? (
-            <h1 style={{ margin: "auto" }}>
-              {counter
-                ? `${total - delta} left`
-                : `${prettyTime(total - delta)}`}
-            </h1>
-          ) : (
-            <Checkmark animated={true} />
-          )}
-          {counter && total != 1 && delta != total && (
-            <RadialSeparators
-              count={total!}
-              style={{
-                background: "var(--progress-fill)",
-                border: "1px solid var(--progress-fill)",
-                width: "19px",
-                height: `20px`,
-                margin: "-1px",
-              }}
-            />
-          )}
-        </CircularProgressbarWithChildren>
+          <CircularProgressbarWithChildren
+            strokeWidth={6}
+            background
+            value={(delta! / total!) * 100}
+            styles={buildStyles({
+              pathColor: color,
+              strokeLinecap: "butt",
+              trailColor: color + "20",
+              backgroundColor:
+                delta < total
+                  ? "var(--progress-fill)"
+                  : color || "#1bb3e6" + "A0",
+            })}
+          >
+            {delta < total ? (
+              <h1 style={{ margin: "auto" }}>
+                {counter
+                  ? `${total - delta} left`
+                  : `${prettyTime(total - delta)}`}
+              </h1>
+            ) : (
+              <Checkmark animated={true} />
+            )}
+            {counter && total != 1 && delta != total && (
+              <RadialSeparators
+                count={total!}
+                style={{
+                  background: "var(--progress-fill)",
+                  border: "1px solid var(--progress-fill)",
+                  width: "19px",
+                  height: `20px`,
+                  margin: "-1px",
+                }}
+              />
+            )}
+          </CircularProgressbarWithChildren>
+        </motion.div>
         {taskOver && (
           <div style={{ position: "absolute", left: "50%", top: "50%" }}>
             <ConfettiExplosion {...confettiProps} />

@@ -3,6 +3,9 @@
   display: grid;
   grid-template-columns: 1fr 1fr;
   overflow: hidden;
+  height: 100vh;
+  row-gap: 0px;
+  align-content: start;
 }
 
 .stat-container {

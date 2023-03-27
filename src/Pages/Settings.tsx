@@ -20,7 +20,7 @@ function Settings({
   }, [theme]);
 
   return (
-    <div>
+    <div style={{ height: "100vh" }}>
       <div className="heading"> Settings </div>
       <div style={{ padding: 20 }}>
         <Confirmation

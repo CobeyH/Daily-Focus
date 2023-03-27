@@ -13,6 +13,7 @@ import "../components/Analytics/Heatmap";
 function Analytics({ saves }: { saves: Save[] }) {
   return (
     <div className="analytics">
+      <div className="heading span2"> Stats </div>
       <Card>
         <div className="stat-container">
           <h2 className="stat">{calculateAverageCompletion(saves) + "%"}</h2>
