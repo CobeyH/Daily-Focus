@@ -4,29 +4,32 @@
   --text-secondary: rgb(92, 103, 136);
   --accent: purple;
   --nav-bar: black;
-  --progress-fill: #11191f;
+  --progress-fill: #102534;
   --primary-inverse: white;
   --overlay-color: #000000b0;
+  /* #1095c1 */
 }
 
 [data-theme="dark"] {
-  --background-color: #12191F !important;
+  --background-color: #12191f !important;
   --text-primary: white;
   --text-secondary: grey;
   --accent: rgb(8, 154, 142);
   --nav-bar: black;
-  --progress-fill: #11191f;
+  --progress-fill: #102534;
   --primary-inverse: white;
   --overlay-color: #000000b0;
 }
 
 [data-theme="light"] {
-  --background-color: #9cd8e7 !important;
+  --background-color: white !important;
   --text-primary: black;
   --text-secondary: rgb(65, 65, 65);
   --accent: #11191f;
-  --nav-bar: #cae5ec;
-  --progress-fill: #cae5ec;
+  --nav-bar: white;
+  --progress-fill: rgba(30, 176, 244, 0.1);
   --primary-inverse: #11191f !important;
   --overlay-color: white;
+  --primary: hsl(197, 77%, 68%) !important;
+  --primary-inverse: rgb(6, 29, 47) !important;
 }

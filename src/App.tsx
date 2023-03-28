@@ -102,12 +102,13 @@ function App() {
           >
             <div
               style={{
-                height: `${delta}%`,
+                height: `${100-delta}%`,
                 width: "100vw",
                 background: "var(--progress-fill)",
                 transition: "all 0.5s",
                 position: "absolute",
                 zIndex: 0,
+                bottom: 0,
               }}
             />
             {tab === TabType.Main && <Main proSku={proSku} />}

@@ -156,7 +156,7 @@ function Focus({ name, delta, total, counter, color, days }: TimerType) {
               trailColor: color + "20",
               backgroundColor:
                 delta < total
-                  ? "var(--progress-fill)"
+                  ? "var(--background-color)"
                   : color || "#1bb3e6" + "A0",
             })}
           >
@@ -173,8 +173,8 @@ function Focus({ name, delta, total, counter, color, days }: TimerType) {
               <RadialSeparators
                 count={total!}
                 style={{
-                  background: "var(--progress-fill)",
-                  border: "1px solid var(--progress-fill)",
+                  background: "var(--background-color)",
+                  border: "1px solid var(--background-color)",
                   width: "19px",
                   height: `20px`,
                   margin: "-1px",
