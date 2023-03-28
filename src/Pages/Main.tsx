@@ -40,8 +40,9 @@ function Main({ proSku }: { proSku: SkuInfo }) {
               return <Timer key={t.name} {...t} idx={idx} color={t.color} />;
             })}
           </div>
-          {state.state.promode ||
-          state.state.timers.length < FREE_MAX_TIMERS ||
+          {/* PRO_MODE */}
+          {/* {state.state.promode || */}
+          {state.state.timers.length < FREE_MAX_TIMERS ||
           !Capacitor.isNativePlatform() ? (
             <Add setHook={addTimer} reset={true} timers={state.state.timers}>
               <button className="add">
@@ -52,14 +53,24 @@ function Main({ proSku }: { proSku: SkuInfo }) {
             <Confirmation
               title={"Buy Pro"}
               body={
-                "You have reached the three task limit for the trial period. Buy pro mode to add more activities. $" +
-                proSku?.proSku?.product.price
+                <div>
+                  You have reached the three task limit for the free trial. The
+                  developers are currently working on adding a
+                  <strong>Pro Mode</strong> which will soon be available.
+                </div>
               }
-              callback={() => purchaseSKU(proSku)}
+              // PRO_MODE
+              // body={
+              //   "You have reached the three task limit for the trial period. Buy pro mode to add more activities. $" +
+              //   proSku?.proSku?.product.price
+              // }
+              // callback={() => purchaseSKU(proSku)}
+              callback={() => console.log("No Pro Implemented")}
               type={"add"}
               invert
-              confirmText="Purchase"
-              disabled={!proSku?.proSku}
+              // confirmText="Purchase"
+              confirmText="Wait"
+              //disabled={!proSku?.proSku}
             >
               <FaPlus />
             </Confirmation>

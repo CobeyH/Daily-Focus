@@ -1,6 +1,6 @@
 import { App } from "@capacitor/app";
 import { Capacitor } from "@capacitor/core";
-import { motion } from "framer-motion";
+import { AnimatePresence, motion, useAnimationControls } from "framer-motion";
 import { useContext, useEffect, useState } from "react";
 import {
   buildStyles,
@@ -12,7 +12,7 @@ import ConfettiExplosion, { ConfettiProps } from "react-confetti-explosion";
 import {
   FaChevronLeft,
   FaCog,
-  FaForward,
+  FaForward,  
   FaPause,
   FaPlay,
   FaTrash,
@@ -42,7 +42,7 @@ const confettiProps: ConfettiProps = {
 };
 
 const effect = new Audio("/sounds/complete.mp3");
-
+const ANIM_DURATION = 0.25;
 function Focus({ name, delta, total, counter, color, days }: TimerType) {
   const [prevDelta, setPrevDelta] = useState(delta);
   const [taskOver, setTaskOver] = useState(false);
@@ -89,7 +89,15 @@ function Focus({ name, delta, total, counter, color, days }: TimerType) {
     days,
   };
 
-  const handleBack = () => {
+  const handleBack = async () => {
+    fadeControl.start({ opacity: 0 });
+    await motionControl.start({
+      width,
+      height,
+      x: x - window.innerWidth / 2,
+      y: y - window.innerHeight / 2,
+      opacity: 1,
+    });
     // Handle the back swipe gesture here
     signalStop();
   };
@@ -111,17 +119,22 @@ function Focus({ name, delta, total, counter, color, days }: TimerType) {
     y: 0,
   };
 
+  const fadeControl = useAnimationControls();
+  const motionControl = useAnimationControls();
+
+  useEffect(() => {
+    fadeControl.start({ opacity: 1 });
+    motionControl.start({ width: 300, height: 300, x: 0, y: 0 });
+  }, []);
+
   const { width, height, x, y } = state.state.focusRect ?? emptyRect;
   return (
-    <div className="container">
-      <button onClick={() => handleBack()} className="back-button">
-        <FaChevronLeft size={32} />
-      </button>
-      <h3 className="title">{name}</h3>
+    <>
       <div className="timer-container">
         <GradientSVG />
         <motion.div
           key="focus-timer"
+          style={{ zIndex: 999 }}
           initial={{
             width,
             height,
@@ -129,8 +142,9 @@ function Focus({ name, delta, total, counter, color, days }: TimerType) {
             y: y - window.innerHeight / 2,
             opacity: 1,
           }}
-          animate={{ width: 300, height: 300, x: 0, y: 0 }}
-          transition={{ duration: 0.3 }}
+          animate={motionControl}
+          transition={{ duration: ANIM_DURATION }}
+          exit={{ opacity: 0 }}
         >
           <CircularProgressbarWithChildren
             strokeWidth={6}
@@ -142,7 +156,7 @@ function Focus({ name, delta, total, counter, color, days }: TimerType) {
               trailColor: color + "20",
               backgroundColor:
                 delta < total
-                  ? "var(--progress-fill)"
+                  ? "var(--background-color)"
                   : color || "#1bb3e6" + "A0",
             })}
           >
@@ -159,8 +173,8 @@ function Focus({ name, delta, total, counter, color, days }: TimerType) {
               <RadialSeparators
                 count={total!}
                 style={{
-                  background: "var(--progress-fill)",
-                  border: "1px solid var(--progress-fill)",
+                  background: "var(--background-color)",
+                  border: "1px solid var(--background-color)",
                   width: "19px",
                   height: `20px`,
                   margin: "-1px",
@@ -174,52 +188,72 @@ function Focus({ name, delta, total, counter, color, days }: TimerType) {
             <ConfettiExplosion {...confettiProps} />
           </div>
         )}
-        <br />
-        <br />
-        <div className="button-container">
-          <button
-            className="play-button"
-            onClick={() =>
-              counter ? countNext() : isRunning ? signalPause() : signalStart()
-            }
-            disabled={delta >= total}
-          >
-            {counter ? (
-              <FaForward />
-            ) : isRunning ? (
-              <FaPause />
-            ) : (
-              <FaPlay style={{ position: "relative", left: "2px" }} />
-            )}
-          </button>
+      </div>
+      <motion.div
+        className="container"
+        initial={{
+          opacity: 0,
+        }}
+        animate={fadeControl}
+        transition={{ duration: ANIM_DURATION, ease: "easeInOut" }}
+      >
+        <button onClick={() => handleBack()} className="back-button">
+          <FaChevronLeft size={32} />
+        </button>
+        <h3 className="title">{name}</h3>
+
+        <div className="footer-buttons">
+          <div>
+            <div className="button-container footer-top">
+              <button
+                className="play-button"
+                onClick={() =>
+                  counter
+                    ? countNext()
+                    : isRunning
+                    ? signalPause()
+                    : signalStart()
+                }
+                disabled={delta >= total}
+              >
+                {counter ? (
+                  <FaForward />
+                ) : isRunning ? (
+                  <FaPause />
+                ) : (
+                  <FaPlay style={{ position: "relative", left: "2px" }} />
+                )}
+              </button>
+            </div>
+          </div>
+          <div className="footer-bottom">
+            <Confirmation
+              title="Reset Timer"
+              body="Task data will be reset to zero. This action cannot be undone"
+              callback={() => {
+                signalReset();
+                setTaskOver(false);
+              }}
+              disabled={delta == 0}
+            >
+              <FaUndoAlt />
+            </Confirmation>
+            <Confirmation
+              title="Delete Timer"
+              body="Task will be deleted. All previous task data will be preserved."
+              callback={() => deleteTimer(name)}
+            >
+              <FaTrash />
+            </Confirmation>
+            <Add setHook={editTimer} initialValues={init}>
+              <button className="action-button">
+                <FaCog />
+              </button>
+            </Add>
+          </div>
         </div>
-      </div>
-      <div className="footer-buttons">
-        <Confirmation
-          title="Reset Timer"
-          body="Task data will be reset to zero. This action cannot be undone"
-          callback={() => {
-            signalReset();
-            setTaskOver(false);
-          }}
-          disabled={delta == 0}
-        >
-          <FaUndoAlt />
-        </Confirmation>
-        <Confirmation
-          title="Delete Timer"
-          body="Task will be deleted. All previous task data will be preserved."
-          callback={() => deleteTimer(name)}
-        >
-          <FaTrash />
-        </Confirmation>
-        <Add setHook={editTimer} initialValues={init}>
-          <button className="action-button">
-            <FaCog />
-          </button>
-        </Add>
-      </div>
-    </div>
+      </motion.div>
+    </>
   );
 }
 

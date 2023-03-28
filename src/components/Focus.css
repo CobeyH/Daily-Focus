@@ -11,7 +11,7 @@
   background-color: transparent;
   border: none;
   position: absolute;
-  color: var(--primary-text);
+  color: var(--text-primary);
   left: 15px;
   top: 33px;
   width: 50px;
@@ -46,11 +46,20 @@
 }
 
 .footer-buttons {
-  display: flex;
-  justify-content: space-around;
   position: absolute;
   width: 100%;
   bottom: 15px;
+}
+
+.footer-top {
+  position: fixed;
+  bottom: 18.5%;
+  left: 0;
+}
+
+.footer-bottom {
+  display: flex;
+  justify-content: space-around;
 }
 
 .action-button {
@@ -67,6 +76,9 @@
   opacity: 0.99;
   font-size: 22px;
   font-weight: bold;
+  max-width: 1024px;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .separator {
@@ -79,6 +91,9 @@
 .timer-container {
   height: 300px;
   width: 300px;
-  position: relative;
-  bottom: 7%;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform-origin: center;
+  transform: translateX(-50%) translateY(-66%);
 }

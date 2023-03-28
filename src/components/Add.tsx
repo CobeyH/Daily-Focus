@@ -158,9 +158,9 @@ function Add({
                     default: {
                       triangle: {
                         borderColor:
-                          "transparent transparent var(--progress-fill)",
+                          "transparent transparent var(--background-color)",
                       },
-                      card: { background: "var(--progress-fill)" },
+                      card: { background: "var(--background-color)" },
                       hash: { display: "none" },
                       input: { display: "none" },
                     },
