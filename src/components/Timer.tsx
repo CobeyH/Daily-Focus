@@ -41,7 +41,9 @@ function Timer({ name, delta, total, counter, idx, color }: TimerProps) {
               trailColor: color + "20",
               // trailColor: "#2e2e2e",
               backgroundColor:
-                delta < total ? "var(--background-color)" : color || "#1bb3e6",
+                delta < total
+                  ? "var(--timer-color)"
+                  : color || "#1bb3e6" + "A0",
             })}
           >
             {delta < total ? (
@@ -57,7 +59,7 @@ function Timer({ name, delta, total, counter, idx, color }: TimerProps) {
               <RadialSeparators
                 count={total!}
                 style={{
-                  background: "var(--background-color)",
+                  background: "var(--timer-color)",
                   width: "12px",
                   height: `${15}%`,
                   margin: "-1px",

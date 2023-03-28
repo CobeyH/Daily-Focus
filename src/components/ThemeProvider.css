@@ -19,6 +19,7 @@
   --progress-fill: #102534;
   --primary-inverse: white;
   --overlay-color: #000000b0;
+  --timer-color: var(--background-color);
 }
 
 [data-theme="light"] {
@@ -27,9 +28,10 @@
   --text-secondary: rgb(65, 65, 65);
   --accent: #11191f;
   --nav-bar: white;
-  --progress-fill: rgba(30, 176, 244, 0.1);
+  --progress-fill: #bedbff;
   --primary-inverse: #11191f !important;
   --overlay-color: white;
   --primary: hsl(197, 77%, 68%) !important;
   --primary-inverse: rgb(6, 29, 47) !important;
+  --timer-color: var(--background-color);
 }

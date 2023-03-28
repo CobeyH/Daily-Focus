@@ -11,7 +11,7 @@
   background-color: transparent;
   border: none;
   position: absolute;
-  color: var(--primary-text);
+  color: var(--text-primary);
   left: 15px;
   top: 33px;
   width: 50px;
